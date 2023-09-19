@@ -42,6 +42,7 @@ from OCC.Core.V3d import V3d_DirectionalLight
 from OCC.Display.SimpleGui import init_display
 from OCC.Display.OCCViewer import get_color_from_name
 from OCC.Display.OCCViewer import Viewer3d
+from OCC.Core.gp import gp_Pnt, gp_Dir
 
 from occwl.edge import Edge
 from occwl.face import Face
@@ -283,6 +284,64 @@ class _BaseViewer:
         self._display.View.SetComputedMode(False)
         self._display.Context.SetDisplayMode(AIS_Shaded, True)
 
+    def set_viewpoint_Xup(self, eye_x, eye_y, eye_z, center_x, center_y, center_z):
+        """
+        Set the camera's viewpoint.
+
+        Args:
+            eye_x, eye_y, eye_z: Coordinates of the camera's position.
+            center_x, center_y, center_z: Coordinates of the camera's target.
+        """
+        cam = self._display.View.Camera()  # type: Graphic3d_Camera
+
+        # Set the camera's position and target
+        cam.SetEye(gp_Pnt(eye_x, eye_y, eye_z))
+        cam.SetCenter(gp_Pnt(center_x, center_y, center_z))
+
+        # Set the up direction to X-axis
+        cam.SetUp(gp_Dir(1, 0, 0))
+        # Update the viewer to reflect the changes
+        self._display.Context.UpdateCurrentViewer()
+        
+    def set_viewpoint_Yup(self, eye_x, eye_y, eye_z, center_x, center_y, center_z):
+        """
+        Set the camera's viewpoint.
+
+        Args:
+            eye_x, eye_y, eye_z: Coordinates of the camera's position.
+            center_x, center_y, center_z: Coordinates of the camera's target.
+        """
+        cam = self._display.View.Camera()  # type: Graphic3d_Camera
+
+        # Set the camera's position and target
+        cam.SetEye(gp_Pnt(eye_x, eye_y, eye_z))
+        cam.SetCenter(gp_Pnt(center_x, center_y, center_z))
+
+        # Set the up direction to Y-axis
+        cam.SetUp(gp_Dir(0, 1, 0))
+        # Update the viewer to reflect the changes
+        self._display.Context.UpdateCurrentViewer()
+
+     def set_viewpoint_Zup(self, eye_x, eye_y, eye_z, center_x, center_y, center_z):
+        """
+        Set the camera's viewpoint.
+
+        Args:
+            eye_x, eye_y, eye_z: Coordinates of the camera's position.
+            center_x, center_y, center_z: Coordinates of the camera's target.
+        """
+        cam = self._display.View.Camera()  # type: Graphic3d_Camera
+
+        # Set the camera's position and target
+        cam.SetEye(gp_Pnt(eye_x, eye_y, eye_z))
+        cam.SetCenter(gp_Pnt(center_x, center_y, center_z))
+
+        # Set the up direction to Z-axis
+        cam.SetUp(gp_Dir(0, 0, 1))
+        # Update the viewer to reflect the changes
+        self._display.Context.UpdateCurrentViewer()
+
+    
     def save_image(self, filename=None):
         """
         Save a screenshot of the viewer
